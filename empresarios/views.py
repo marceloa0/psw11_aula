@@ -6,6 +6,9 @@ from .models import Empresas
 
 
 def cadastrar_empresa(request):
+    if not request.user.is_authenticated:
+        return redirect('/usuarios/logar')
+
     if request.method == 'GET':
         context = {
             'tempo_existencia': Empresas.tempo_existencia_choices,
@@ -50,7 +53,17 @@ def cadastrar_empresa(request):
             empresa.save()
         except:
             messages.add_message(request, constants.ERROR, 'Erro interno do sistema')
-            return redirect('empresarios/cadastrar_empresa')
+            return redirect('cadastrar_empresa')
         
         messages.add_message(request, constants.SUCCESS, 'Empresa criada com sucesso')
-        return redirect('empresarios/cadastrar_empresa')
+        return redirect('cadastrar_empresa')
+    
+def listar_empresas(request):
+    if not request.user.is_authenticated:
+        return redirect('/usuarios/logar')
+
+    if request.method == 'GET':
+        # TODO: Fazer o filtro da pesquisa funcionar
+
+        empresas = Empresas.objects.filter(user=request.user)
+        return render(request, 'listar_empresas.html', {'empresas': empresas})

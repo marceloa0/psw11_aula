@@ -41,7 +41,7 @@ def logar(request):
 
         user = auth.authenticate(request, username=username, password=senha) # só confere se o usuário existe e a senha está correta
         if user:
-            auth.login(request.user) # aqui ele de fato atrela o IP ao usuário
+            auth.login(request, user) # aqui ele de fato atrela o IP ao usuário
             return redirect('/empresarios/cadastrar_empresa')
         else:
             messages.add_message(request, constants.ERROR, 'Usuário ou senha inválidos')
