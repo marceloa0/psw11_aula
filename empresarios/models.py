@@ -47,3 +47,7 @@ class Empresas(models.Model):
             return mark_safe('<span class="badge bg-success">Captação finalizada</span>')
         else:
             return mark_safe('<span class="badge bg-primary">Em captação</span>')
+        
+    @property
+    def valuation(self):
+        return f'R$ {self.valor / self.percentual_equity * 100:.2f}'.replace('.', ',')
