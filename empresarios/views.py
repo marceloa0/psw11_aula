@@ -2,7 +2,7 @@ from django.contrib import messages
 from django.contrib.messages import constants
 from django.shortcuts import render, redirect
 
-from .models import Empresas, Documento
+from .models import Empresas, Documento, Metricas
 
 
 def cadastrar_empresa(request):
@@ -118,3 +118,18 @@ def excluir_dc(request, id):
     documento.delete()
     messages.add_message(request, constants.SUCCESS, 'Docuento deletado com sucesso')
     return redirect(f'/empresarios/empresa/{documento.empresa.id}')
+
+def add_metrica(request, id):
+    empresa = Empresas.objects.get(id=id)
+    titulo = request.POST.get('titulo')
+    valor = request.POST.get('valor')
+
+    metrica = Metricas(
+        empresa=empresa,
+        titulo=titulo,
+        valor=valor
+    )
+    metrica.save()
+
+    messages.add_message(request, constants.SUCCESS, 'Métrica cadastrada com sucesso')
+    return redirect(f'/empresarios/empresa/{empresa.id}')
