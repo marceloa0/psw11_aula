@@ -107,3 +107,14 @@ def add_doc(request, id):
 
     messages.add_message(request, constants.SUCCESS, 'Arquivo cadastrado com sucesso')
     return redirect(f'/empresarios/empresa/{id}')
+
+def excluir_dc(request, id):
+    documento = Documento.objects.get(id=id)
+
+    if documento.empresa.user != request.user:
+        messages.add_message(request, constants.ERROR, 'Essa empresa não é sua')
+        return redirect(f'/empresarios/listar_empresas')
+
+    documento.delete()
+    messages.add_message(request, constants.SUCCESS, 'Docuento deletado com sucesso')
+    return redirect(f'/empresarios/empresa/{documento.empresa.id}')
