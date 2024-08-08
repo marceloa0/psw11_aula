@@ -50,7 +50,7 @@ class Empresas(models.Model):
         
     @property
     def valuation(self):
-        return f'R$ {self.valor / self.percentual_equity * 100:.2f}'.replace('.', ',')
+        return f'{self.valor / self.percentual_equity * 100:.2f}'
     
 class Documento(models.Model):
     empresa = models.ForeignKey(Empresas, on_delete=models.DO_NOTHING)
